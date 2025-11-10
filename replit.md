@@ -6,7 +6,13 @@ LearnLoop is a Next.js-based learning platform that uses Google's Gemini AI to g
 **Current State**: Successfully migrated from Vercel to Replit and running in production mode.
 
 ## Recent Changes
-- **November 10, 2025 (Latest)**: Fixed course generation status indicators and logging
+- **November 10, 2025 (Latest)**: Added Gemini API quota warning and improved UI visibility
+  - Added clear warning message when Gemini API quota is exceeded (>40s generation time)
+  - Improved status badge visibility with wider container (14rem) and padding
+  - Confirmed fallback template DOES customize content based on user's topic and difficulty
+  - Note: Courses may look structurally similar when using fallback, but content is topic-specific
+  
+- **November 10, 2025**: Fixed course generation status indicators and logging
   - Fixed status state race condition - "Course ready" indicator now displays for full 5 seconds
   - Added request ID correlation between frontend and backend for better debugging
   - Implemented concise structured logging with timing information
