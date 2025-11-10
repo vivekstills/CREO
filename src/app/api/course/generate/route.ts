@@ -662,7 +662,6 @@ async function enrichModulesWithQuizzes(modules: CourseModule[], apiKey: string)
 
 export async function POST(request: Request) {
   const startTime = Date.now();
-  const requestId = `gen_${startTime}_${Math.random().toString(36).substring(7)}`;
   
   try {
     // Parse request body
@@ -680,6 +679,7 @@ export async function POST(request: Request) {
     }
 
     const courseRequest = parseResult.data!;
+    const requestId = (courseRequest as any).requestId || `gen_${startTime}`;
     
     console.log(`[${requestId}] Request: "${courseRequest.topic}" (${courseRequest.difficulty}, ${courseRequest.duration})`);
     

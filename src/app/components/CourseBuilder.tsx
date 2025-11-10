@@ -237,7 +237,7 @@ export default function CourseBuilder() {
     let wasSuccessful = false;
 
     try {
-      const payload = { ...formData, cacheBuster: Date.now() };
+      const payload = { ...formData, requestId };
       
       const response = await fetch('/api/course/generate', {
         method: 'POST',
