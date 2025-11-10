@@ -662,6 +662,7 @@ async function enrichModulesWithQuizzes(modules: CourseModule[], apiKey: string)
 
 export async function POST(request: Request) {
   const startTime = Date.now();
+  const requestId = `gen_${startTime}_${Math.random().toString(36).substring(7)}`;
   
   try {
     // Parse request body
@@ -679,6 +680,8 @@ export async function POST(request: Request) {
     }
 
     const courseRequest = parseResult.data!;
+    
+    console.log(`[${requestId}] Request: "${courseRequest.topic}" (${courseRequest.difficulty}, ${courseRequest.duration})`);
     
     // Validate required fields
     if (!courseRequest.topic) {
@@ -787,7 +790,7 @@ export async function POST(request: Request) {
     let courseData: any = null;
 
     if (!geminiResponse || !geminiResponse.ok) {
-      console.warn('All Gemini models failed. Falling back to starter template. Last error:', lastError);
+      console.warn(`[${requestId}] Gemini failed, using fallback (${lastError})`);
       courseData = buildFallbackCourseData(courseRequest);
     } else {
       const geminiData = await geminiResponse.json();
@@ -804,15 +807,14 @@ export async function POST(request: Request) {
       }
 
       if (!responseText) {
-        console.warn('Gemini returned no content. Using fallback structure.');
+        console.warn(`[${requestId}] Empty Gemini response, using fallback`);
         courseData = buildFallbackCourseData(courseRequest);
       } else {
         try {
           courseData = extractCourseJson(responseText);
-          console.log('Successfully extracted course structure');
+          console.log(`[${requestId}] Gemini success: "${courseData.title}" (${courseData.modules?.length} modules)`);
         } catch (error) {
-          console.error('Failed to extract course JSON, using fallback structure:', error);
-          console.log('Raw response (first 500 chars):', responseText.substring(0, 500));
+          console.error(`[${requestId}] JSON extraction failed, using fallback`);
           courseData = buildFallbackCourseData(courseRequest);
         }
       }

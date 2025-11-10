@@ -219,19 +219,26 @@ export default function CourseBuilder() {
       return;
     }
 
+    const requestId = `req_${Date.now()}_${Math.random().toString(36).substring(7)}`;
+    console.log(`[${requestId}] Course generation: ${formData.topic} (${formData.difficulty})`);
+    
     setLoading(true);
     setError(null);
     setCourse(null);
     setGenerationStats(null);
     setFeaturedVideos(null);
     setStatusState('loading');
+    
     if (completionTimeout.current) {
       clearTimeout(completionTimeout.current);
       completionTimeout.current = null;
     }
 
+    let wasSuccessful = false;
+
     try {
       const payload = { ...formData, cacheBuster: Date.now() };
+      
       const response = await fetch('/api/course/generate', {
         method: 'POST',
         headers: {
@@ -245,7 +252,7 @@ export default function CourseBuilder() {
       try {
         data = JSON.parse(responseText);
       } catch (e) {
-        console.error('Failed to parse response:', e);
+        console.error(`[${requestId}] Failed to parse response`);
         throw new Error('Invalid response format from server');
       }
 
@@ -253,6 +260,8 @@ export default function CourseBuilder() {
         throw new Error(data.error || 'Failed to generate course');
       }
 
+      console.log(`[${requestId}] Success: "${data.course?.title}" (${data.course?.modules.length} modules, ${data.generationTime}ms)`);
+      
       setCourse(data.course!);
       if (typeof window !== 'undefined' && data.course) {
         try {
@@ -275,20 +284,28 @@ export default function CourseBuilder() {
         time: data.generationTime,
         videos: data.videosFetched
       });
+      
+      wasSuccessful = true;
       setStatusState('done');
+      
       completionTimeout.current = setTimeout(() => {
         setStatusState('idle');
         completionTimeout.current = null;
-      }, 3600);
+      }, 5000);
 
       if (data.course && data.course.modules.length > 0) {
         setExpandedModules(new Set([data.course.modules[0].id]));
       }
     } catch (err) {
+      console.error(`[${requestId}] Error:`, err instanceof Error ? err.message : err);
       setError(err instanceof Error ? err.message : 'An error occurred');
       setStatusState('idle');
     } finally {
       setLoading(false);
+      if (!wasSuccessful && completionTimeout.current) {
+        clearTimeout(completionTimeout.current);
+        completionTimeout.current = null;
+      }
     }
   };
 
