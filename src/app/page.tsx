@@ -8,6 +8,8 @@ import { BookOpen, BookOpenCheck, GraduationCap, Sparkles, Star, TrendingUp, Moo
 import CourseProgress from '@/app/components/CourseProgress';
 import { Course } from '@/app/types/course';
 import Waves from '@/app/components/Waves';
+import FloatingElement from '@/app/components/FloatingElement';
+import { HERO_FLOATING_ELEMENTS } from '@/app/config/heroFloatingElements';
 
 const headlineFont = Playfair_Display({ subsets: ['latin'], weight: ['600', '700', '900'] });
 const bodyFont = Space_Grotesk({ subsets: ['latin'], weight: ['400', '500', '600'] });
@@ -480,118 +482,17 @@ export default function Home() {
         <div className="relative z-20 flex items-center justify-center min-h-[calc(100vh-100px)] px-6 pb-16">
           <div className="max-w-7xl w-full">
             
-            {/* Refined floating course card - left */}
-            <motion.div
-              className="absolute left-[8%] top-[22%] hidden lg:block"
-              animate={{
-                y: [-12, 12, -12],
-                rotate: [-2, 2, -2]
-              }}
-              transition={{ duration: 7, repeat: Infinity, ease: "easeInOut" }}
-            >
-              <div className={`w-64 rounded-3xl backdrop-blur-sm border shadow-[0_20px_60px_rgba(194,79,99,0.15)] p-5 relative overflow-hidden transition-colors duration-300 ${
-                isDarkMode 
-                  ? 'bg-[#1f1410]/90 border-[#3a2f2a]' 
-                  : 'bg-white/90 border-[#f2e1d8]'
-              }`}>
-                <div className={`absolute inset-0 ${
-                  isDarkMode ? 'bg-gradient-to-br from-[#2a1f1a]/50 to-transparent' : 'bg-gradient-to-br from-[#fff4ec]/50 to-transparent'
-                }`} />
-                <div className="relative">
-                  <div className="flex items-center gap-2 mb-3">
-                    <div className={`w-8 h-8 rounded-xl bg-gradient-to-br flex items-center justify-center ${
-                      isDarkMode ? 'from-[#3a2420] to-[#3a2028]' : 'from-[#fde6e0] to-[#f9c5d1]'
-                    }`}>
-                      <BookOpen className={`w-4 h-4 ${isDarkMode ? 'text-[#ff8ab6]' : 'text-[#c24f63]'}`} />
-                    </div>
-                    <span className={`text-[0.65rem] font-semibold uppercase tracking-wider ${
-                      isDarkMode ? 'text-[#c9a89a]' : 'text-[#b37871]'
-                    }`}>In Progress</span>
-                  </div>
-                  <h3 className={`${headlineFont.className} text-lg mb-3 ${
-                    isDarkMode ? 'text-[#f5e6dc]' : 'text-[#1f120f]'
-                  }`}>JavaScript Essentials</h3>
-                  <div className={`flex items-center gap-2 text-xs ${
-                    isDarkMode ? 'text-[#b8998a]' : 'text-[#5b4743]'
-                  }`}>
-                    <div className={`flex-1 rounded-full h-1.5 ${
-                      isDarkMode ? 'bg-[#3a2f2a]' : 'bg-[#f2e1d8]'
-                    }`}>
-                      <div className="bg-gradient-to-r from-[#c24f63] to-[#ff8ab6] h-1.5 rounded-full w-3/5" />
-                    </div>
-                    <span className="font-semibold">60%</span>
-                  </div>
-                </div>
-              </div>
-            </motion.div>
-
-            {/* Elegant icon circle - right top */}
-            <motion.div
-              className="absolute right-[10%] top-[20%] hidden lg:block"
-              animate={{
-                y: [-15, 15, -15],
-                rotate: [3, -3, 3]
-              }}
-              transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
-            >
-              <div className={`w-36 h-36 rounded-full backdrop-blur-sm border-2 shadow-[0_20px_50px_rgba(179,120,113,0.2)] flex items-center justify-center transition-colors duration-300 ${
-                isDarkMode 
-                  ? 'bg-[#1f1410]/80 border-[#3a2f2a]' 
-                  : 'bg-white/80 border-[#f2e1d8]'
-              }`}>
-                <GraduationCap className={`w-16 h-16 ${isDarkMode ? 'text-[#ff8ab6]' : 'text-[#c24f63]'}`} />
-              </div>
-            </motion.div>
-
-            {/* Stats card - left bottom */}
-            <motion.div
-              className="absolute left-[10%] bottom-[18%] hidden lg:block"
-              animate={{
-                y: [12, -12, 12],
-                rotate: [-3, 3, -3]
-              }}
-              transition={{ duration: 6.5, repeat: Infinity, ease: "easeInOut" }}
-            >
-              <div className={`rounded-3xl backdrop-blur-sm border shadow-[0_20px_50px_rgba(194,79,99,0.15)] p-4 transition-colors duration-300 ${
-                isDarkMode 
-                  ? 'bg-[#1f1410]/85 border-[#3a2f2a]' 
-                  : 'bg-white/85 border-[#f2e1d8]'
-              }`}>
-                <div className="flex items-center gap-3">
-                  <div className={`w-11 h-11 rounded-2xl bg-gradient-to-br flex items-center justify-center ${
-                    isDarkMode ? 'from-[#3a3420] to-[#3a2e20]' : 'from-[#fff4d8] to-[#ffd6a5]'
-                  }`}>
-                    <TrendingUp className={`w-5 h-5 ${isDarkMode ? 'text-[#ffd6a5]' : 'text-[#d4a574]'}`} />
-                  </div>
-                  <div>
-                    <p className={`text-[0.65rem] font-semibold uppercase tracking-wide ${
-                      isDarkMode ? 'text-[#c9a89a]' : 'text-[#b37871]'
-                    }`}>Active Learners</p>
-                    <p className={`${headlineFont.className} text-xl font-bold ${
-                      isDarkMode ? 'text-[#f5e6dc]' : 'text-[#1f120f]'
-                    }`}>18,240</p>
-                  </div>
-                </div>
-              </div>
-            </motion.div>
-
-            {/* Achievement badge - bottom right */}
-            <motion.div
-              className="absolute right-[12%] bottom-[20%] hidden lg:block"
-              animate={{
-                y: [-10, 10, -10],
-                scale: [1, 1.04, 1]
-              }}
-              transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }}
-            >
-              <div className={`w-16 h-20 rounded-2xl backdrop-blur-sm border shadow-[0_15px_40px_rgba(194,79,99,0.12)] flex items-center justify-center transition-colors duration-300 ${
-                isDarkMode 
-                  ? 'bg-[#1f1410]/80 border-[#3a2f2a]' 
-                  : 'bg-white/80 border-[#f2e1d8]'
-              }`}>
-                <div className="text-3xl">🏆</div>
-              </div>
-            </motion.div>
+            {/* Purposeful floating elements showcasing CREO's features */}
+            <div className="hidden lg:block">
+              {HERO_FLOATING_ELEMENTS.map((element) => (
+                <FloatingElement
+                  key={element.id}
+                  config={element}
+                  isDarkMode={isDarkMode}
+                  parallaxStrength={1}
+                />
+              ))}
+            </div>
 
             {/* Main headline */}
             <div className="text-center relative z-10 max-w-5xl mx-auto">

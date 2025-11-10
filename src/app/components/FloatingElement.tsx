@@ -1,7 +1,7 @@
 'use client';
 
 import { motion, useMotionValue, useTransform } from 'framer-motion';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { FloatingElementConfig } from '@/app/config/heroFloatingElements';
 
 interface FloatingElementProps {
@@ -11,6 +11,7 @@ interface FloatingElementProps {
 }
 
 export default function FloatingElement({ config, isDarkMode, parallaxStrength = 0.02 }: FloatingElementProps) {
+  const [mounted, setMounted] = useState(false);
   const mouseX = useMotionValue(0);
   const mouseY = useMotionValue(0);
 
@@ -18,6 +19,7 @@ export default function FloatingElement({ config, isDarkMode, parallaxStrength =
   const Icon = config.icon;
 
   useEffect(() => {
+    setMounted(true);
     const handleMouseMove = (e: MouseEvent) => {
       const x = e.clientX - window.innerWidth / 2;
       const y = e.clientY - window.innerHeight / 2;
@@ -29,8 +31,9 @@ export default function FloatingElement({ config, isDarkMode, parallaxStrength =
     return () => window.removeEventListener('mousemove', handleMouseMove);
   }, [mouseX, mouseY]);
 
-  const offsetX = useTransform(mouseX, [-window.innerWidth / 2, window.innerWidth / 2], [-20 * parallaxStrength, 20 * parallaxStrength]);
-  const offsetY = useTransform(mouseY, [-window.innerHeight / 2, window.innerHeight / 2], [-15 * parallaxStrength, 15 * parallaxStrength]);
+  // Default range for SSR, will be updated on client
+  const offsetX = useTransform(mouseX, [-500, 500], [-20 * parallaxStrength, 20 * parallaxStrength]);
+  const offsetY = useTransform(mouseY, [-500, 500], [-15 * parallaxStrength, 15 * parallaxStrength]);
 
   return (
     <motion.div
