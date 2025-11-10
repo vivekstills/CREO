@@ -96,10 +96,10 @@ const GameifiedRoadmap = ({ course }: GameifiedRoadmapProps) => {
       </motion.div>
 
       {/* Gamified Journey Map */}
-      <div className="relative w-full h-[500px] bg-gradient-to-br from-[#fffcf9] to-[#fff5ef] rounded-3xl shadow-xl border border-[#f2e7d9] overflow-hidden">
+      <div className="relative w-full h-[500px] bg-gradient-to-br from-[#fffcf9] to-[#fff5ef] rounded-3xl shadow-xl border border-[#f2e7d9]">
         
         {/* Animated SVG Path */}
-        <svg className="absolute top-0 left-0 w-full h-full" viewBox="0 0 600 500">
+        <svg className="absolute top-0 left-0 w-full h-full pointer-events-none" viewBox="0 0 600 500" preserveAspectRatio="xMidYMid meet">
           <defs>
             <linearGradient id="pathGradient" x1="0" y1="1" x2="0" y2="0">
               <stop offset="0%" stopColor="#ff9a8b" />
@@ -131,10 +131,10 @@ const GameifiedRoadmap = ({ course }: GameifiedRoadmapProps) => {
           return (
             <motion.div
               key={module.id}
-              className="absolute flex items-center justify-center w-20 h-20 rounded-full text-3xl shadow-2xl cursor-pointer border-4 border-white group"
+              className="absolute flex items-center justify-center w-20 h-20 rounded-full shadow-2xl cursor-pointer border-4 border-white group z-10"
               style={{
-                top: pos.y,
-                left: pos.x,
+                top: `${pos.y}px`,
+                left: `${pos.x}px`,
                 backgroundColor: bgColor,
                 transform: 'translate(-50%, -50%)'
               }}
@@ -145,13 +145,13 @@ const GameifiedRoadmap = ({ course }: GameifiedRoadmapProps) => {
               }}
               transition={{
                 scale: {
-                  delay: index * 0.3,
+                  delay: 0.8 + index * 0.3,
                   type: 'spring',
                   stiffness: 260,
                   damping: 20
                 },
                 y: {
-                  delay: index * 0.3,
+                  delay: 0.8 + index * 0.3,
                   duration: 2.5,
                   repeat: Infinity,
                   repeatType: 'mirror',
@@ -165,10 +165,10 @@ const GameifiedRoadmap = ({ course }: GameifiedRoadmapProps) => {
               }}
             >
               {/* Icon */}
-              <div className="relative z-10 drop-shadow-lg">
-                {index === 0 && <Star className="w-9 h-9 text-white" fill="white" />}
-                {index === modules.length - 1 && <Trophy className="w-9 h-9 text-white" />}
-                {index > 0 && index < modules.length - 1 && <Zap className="w-9 h-9 text-white" />}
+              <div className="relative z-10 drop-shadow-lg text-white">
+                {index === 0 && <Star className="w-9 h-9" fill="currentColor" />}
+                {index === modules.length - 1 && <Trophy className="w-9 h-9" />}
+                {index > 0 && index < modules.length - 1 && <Zap className="w-9 h-9" />}
               </div>
 
               {/* Number badge */}
