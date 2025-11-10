@@ -525,12 +525,32 @@ export default function CourseBuilder() {
             </select>
           </label>
           <label className="text-sm text-[#111] md:col-span-2">
-            <div className="flex items-center justify-between mb-1">
+            <div className="flex items-center justify-between mb-2">
               <span>Duration</span>
-              <div className="flex items-center gap-2 bg-gradient-to-r from-blue-50 to-purple-50 px-3 py-1.5 rounded-lg border border-blue-200">
-                <span className="text-xs font-medium text-gray-600">Time:</span>
-                <span className="text-sm font-bold text-blue-600">{activeDurationVariant.value}</span>
-              </div>
+              <motion.div
+                className="relative overflow-hidden rounded-2xl border border-[#f2e7d9] bg-gradient-to-br from-white/90 to-[#fff5ef]/60 backdrop-blur-sm shadow-[inset_0_1px_2px_rgba(169,87,87,0.05)] hover:shadow-[0_12px_30px_-18px_rgba(169,87,87,0.55)] transition-shadow duration-300"
+                animate={{ scale: [1, 1.02, 1] }}
+                transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
+              >
+                <div className="absolute inset-0 bg-gradient-to-r from-[#a95757]/5 to-[#c1b6a4]/5 opacity-50" />
+                <div className="relative px-4 py-2 flex flex-col items-center justify-center min-w-[6rem]">
+                  <span className="text-[0.6rem] uppercase tracking-[0.25em] text-[#c1b6a4] font-medium">
+                    Time
+                  </span>
+                  <AnimatePresence mode="wait">
+                    <motion.div
+                      key={activeDurationVariant.value}
+                      initial={{ y: 8, opacity: 0, scale: 0.9 }}
+                      animate={{ y: 0, opacity: 1, scale: 1 }}
+                      exit={{ y: -8, opacity: 0, scale: 0.9 }}
+                      transition={{ type: "spring", stiffness: 240, damping: 20 }}
+                      className="text-base font-bold text-[#a95757] tracking-tight"
+                    >
+                      {activeDurationVariant.value}
+                    </motion.div>
+                  </AnimatePresence>
+                </div>
+              </motion.div>
             </div>
             <input
               type="text"

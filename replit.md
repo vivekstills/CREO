@@ -6,12 +6,13 @@ LearnLoop is a Next.js-based learning platform that uses Google's Gemini AI to g
 **Current State**: Successfully migrated from Vercel to Replit and running in production mode.
 
 ## Recent Changes
-- **November 10, 2025 (Latest)**: Improved course builder UI layout and time cadence sync
-  - Moved "Generate course" button and status badge to align with input fields (right-aligned)
-  - Time cadence now updates live as you type duration (shows weeks in real-time)
-  - Removed auto-rotating cadence - displays actual parsed value from duration input
+- **November 10, 2025 (Latest)**: Enhanced UI with beautiful animated time cadence display
+  - Created glassmorphic time cadence badge with smooth spring animations
+  - Subtle breathing animation (gentle scale pulse every 4 seconds)
+  - Hover effect with warm shadow glow matching brand colors
+  - Value updates with smooth slide-up animation as you type
+  - Moved "Generate course" button and status badge below input fields (right-aligned)
   - Added clear warning when Gemini API quota exceeded (>40s generation time)
-  - Confirmed fallback template customizes content based on topic and difficulty
   
 - **November 10, 2025**: Fixed course generation status indicators and logging
   - Fixed status state race condition - "Course ready" indicator now displays for full 5 seconds
