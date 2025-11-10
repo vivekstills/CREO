@@ -66,28 +66,80 @@ const GameifiedRoadmap = ({ course }: GameifiedRoadmapProps) => {
         <p className="text-sm text-[#666] max-w-2xl mx-auto">{course.description}</p>
       </motion.div>
 
-      <div className="relative w-full overflow-x-auto">
+      {/* Modules displayed as connected journey */}
+      <div className="flex flex-col items-center gap-8 max-w-2xl mx-auto px-4">
+        {modules.map((module, index) => {
+          const gradientColors = [
+            'from-[#ff9a8b] to-[#a95757]',
+            'from-[#ffd89b] to-[#c1b6a4]',
+            'from-[#a18cd1] to-[#a95757]'
+          ];
+          const gradient = gradientColors[index % gradientColors.length];
+          
+          return (
+            <div key={index} className="w-full">
+              {index > 0 && (
+                <div className="h-12 w-1 bg-gradient-to-b from-[#c1b6a4]/40 to-[#a95757]/40 mx-auto" />
+              )}
+              
+              <motion.div
+                initial={{ scale: 0, opacity: 0 }}
+                animate={{ scale: 1, opacity: 1 }}
+                transition={{
+                  delay: 0.3 + index * 0.2,
+                  type: 'spring',
+                  stiffness: 200,
+                  damping: 15
+                }}
+                className="relative"
+              >
+                <div className="flex items-center gap-4">
+                  {/* Module node */}
+                  <motion.button
+                    whileHover={{ scale: 1.1, rotate: [0, -5, 5, 0] }}
+                    whileFocus={{ scale: 1.1 }}
+                    className={`relative group cursor-pointer focus:outline-none focus:ring-2 focus:ring-[#a95757] focus:ring-offset-2 rounded-full flex-shrink-0`}
+                    aria-label={`Module ${index + 1}: ${module.title} - ${module.topics?.length || 0} topics`}
+                    tabIndex={0}
+                  >
+                    <div className="absolute -inset-2 bg-gradient-to-r from-[#a95757]/20 to-[#c1b6a4]/20 rounded-full blur-lg opacity-0 group-hover:opacity-100 group-focus:opacity-100 transition duration-300" />
+                    
+                    <div className={`relative w-20 h-20 rounded-full flex items-center justify-center shadow-xl border-4 border-white bg-gradient-to-br ${gradient}`}>
+                      <div className="relative z-10 text-white">
+                        {index === 0 && <Star className="w-8 h-8" fill="currentColor" aria-hidden="true" />}
+                        {index === modules.length - 1 && <Trophy className="w-8 h-8" aria-hidden="true" />}
+                        {index > 0 && index < modules.length - 1 && <Zap className="w-8 h-8" aria-hidden="true" />}
+                      </div>
+                      
+                      <div className="absolute -top-2 -right-2 w-8 h-8 bg-white rounded-full flex items-center justify-center text-sm font-bold text-[#a95757] shadow-md border-2 border-[#a95757]" aria-hidden="true">
+                        {index + 1}
+                      </div>
+                    </div>
+                  </motion.button>
+                  
+                  {/* Module info */}
+                  <div className="flex-1 bg-white rounded-xl shadow-lg border border-[#f2e7d9] p-4">
+                    <h4 className="font-semibold text-base text-[#262626] mb-1">{module.title}</h4>
+                    <p className="text-xs text-[#666] mb-2 line-clamp-2">{module.description}</p>
+                    <div className="flex items-center gap-2 text-xs text-[#a95757]">
+                      <CheckCircle2 className="w-3 h-3" aria-hidden="true" />
+                      <span>{module.topics?.length || 0} topics</span>
+                    </div>
+                  </div>
+                </div>
+              </motion.div>
+            </div>
+          );
+        })}
+      </div>
+
+      <div className="relative w-full overflow-x-auto hidden">
         <svg 
           width="600" 
           height={200 + modules.length * 180}
           className="mx-auto"
           style={{ minHeight: '400px' }}
         >
-          {/* Animated path */}
-          <motion.path
-            d={pathData}
-            stroke="#c1b6a4"
-            strokeWidth="4"
-            fill="none"
-            strokeLinecap="round"
-            strokeDasharray={totalLength}
-            strokeOpacity="0.6"
-            initial={{ strokeDashoffset: totalLength }}
-            animate={{ strokeDashoffset: 0 }}
-            transition={{ duration: 2, ease: 'easeInOut', delay: 0.3 }}
-          />
-          
-          {/* Gradient definition */}
           <defs>
             <linearGradient id="pathGradient" x1="0%" y1="0%" x2="0%" y2="100%">
               <stop offset="0%" stopColor="#a95757" stopOpacity="0.3" />
