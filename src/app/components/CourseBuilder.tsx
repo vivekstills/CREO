@@ -99,16 +99,18 @@ export default function CourseBuilder() {
   const [generationStats, setGenerationStats] = useState<{ time?: number; videos?: number } | null>(null);
   const [statusState, setStatusState] = useState<'idle' | 'loading' | 'done'>('idle');
   const completionTimeout = useRef<ReturnType<typeof setTimeout> | null>(null);
-  const durationVariants = useMemo(() => buildDurationVariants(formData.duration), [formData.duration]);
+  const [durationInput, setDurationInput] = useState(formData.duration);
+  
+  useEffect(() => {
+    setDurationInput(formData.duration);
+  }, [formData.duration]);
+  
   const activeDurationVariant = useMemo(() => {
-    const input = formData.duration || '';
-    console.log('Computing duration for:', input);
+    const input = durationInput || formData.duration || '4 weeks';
     const days = parseDurationToDays(input);
     const weeks = Math.max(1, Math.round(days / 7));
-    const result = { label: 'Weeks', value: `${weeks} wk${weeks > 1 ? 's' : ''}` };
-    console.log('Computed duration:', result);
-    return result;
-  }, [formData.duration]);
+    return { label: 'Weeks', value: `${weeks} wk${weeks > 1 ? 's' : ''}` };
+  }, [durationInput, formData.duration]);
   const aggregatedCourseVideos = useMemo(() => (course ? collectCourseVideos(course.modules) : []), [course]);
   const hasVideoContent = useMemo(
     () => Boolean(featuredVideos?.popular || featuredVideos?.topRated || aggregatedCourseVideos.length),
@@ -531,18 +533,44 @@ export default function CourseBuilder() {
           <label className="text-sm text-[#111] md:col-span-2">
             <div className="flex items-center justify-between mb-2">
               <span>Duration</span>
-              <div className="px-4 py-2 bg-[#fff5ef] border border-[#f2e7d9] rounded-xl">
-                <div className="text-xs text-[#c1b6a4] mb-1">TIME</div>
-                <div className="text-lg font-bold text-[#a95757]">
-                  {formData.duration || '4 weeks'} = {activeDurationVariant.value}
+              <motion.div
+                animate={{ scale: [1, 1.015, 1] }}
+                transition={{ duration: 3.5, repeat: Infinity, ease: "easeInOut" }}
+                className="relative group"
+              >
+                <div className="absolute -inset-1 bg-gradient-to-r from-[#a95757]/20 via-[#c1b6a4]/20 to-[#a95757]/20 rounded-2xl blur opacity-0 group-hover:opacity-100 transition duration-500" />
+                <div className="relative px-5 py-2.5 bg-gradient-to-br from-[#fff5ef] via-white to-[#fff5ef] border border-[#f2e7d9] rounded-2xl shadow-sm">
+                  <div className="flex items-center gap-3">
+                    <div className="flex flex-col">
+                      <span className="text-[0.65rem] uppercase tracking-[0.3em] text-[#c1b6a4] font-medium">Time</span>
+                      <AnimatePresence mode="wait">
+                        <motion.span
+                          key={activeDurationVariant.value}
+                          initial={{ y: 6, opacity: 0 }}
+                          animate={{ y: 0, opacity: 1 }}
+                          exit={{ y: -6, opacity: 0 }}
+                          transition={{ type: "spring", stiffness: 300, damping: 25 }}
+                          className="text-xl font-bold text-[#a95757] tracking-tight"
+                        >
+                          {activeDurationVariant.value}
+                        </motion.span>
+                      </AnimatePresence>
+                    </div>
+                    <div className="w-8 h-8 rounded-full bg-gradient-to-br from-[#a95757]/10 to-[#c1b6a4]/10 flex items-center justify-center">
+                      <div className="w-2 h-2 rounded-full bg-[#a95757]" />
+                    </div>
+                  </div>
                 </div>
-              </div>
+              </motion.div>
             </div>
             <input
               type="text"
               name="duration"
               value={formData.duration}
-              onChange={handleInputChange}
+              onChange={(e) => {
+                setDurationInput(e.target.value);
+                handleInputChange(e);
+              }}
               placeholder="e.g., 4 weeks"
               className="w-full rounded-2xl border border-[#eaded0] bg-white px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#262626]/15"
             />
