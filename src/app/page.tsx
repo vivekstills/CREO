@@ -435,16 +435,17 @@ export default function Home() {
                 {isDarkMode ? <Sun className="h-4 w-4" /> : <Moon className="h-4 w-4" />}
               </button>
               
-              <Link
-                href="/course"
+              <button
+                type="button"
+                onClick={() => setShowAuth((prev) => !prev)}
                 className={`px-5 py-2.5 rounded-full font-semibold text-sm transition-all shadow-lg ${
                   isDarkMode 
                     ? 'bg-[#c24f63] text-white hover:bg-[#d15f73]' 
                     : 'bg-[#c24f63] text-white hover:bg-[#d15f73]'
                 }`}
               >
-                Launch Builder
-              </Link>
+                Sign in
+              </button>
             </div>
             
             {showAuth && (
@@ -471,7 +472,7 @@ export default function Home() {
               ))}
             </div>
 
-            {/* Main headline - centered with tagline and CTA */}
+            {/* Main headline - centered with CTA */}
             <div className="text-center relative z-10">
               <motion.div
                 initial={{ opacity: 0, y: 30 }}
@@ -479,34 +480,19 @@ export default function Home() {
                 transition={{ duration: 0.8, delay: 0.2 }}
               >
                 <h1 className={`${headlineFont.className} text-7xl md:text-8xl lg:text-9xl font-black leading-[0.9] transition-colors duration-300 ${
-                  isDarkMode ? 'text-[#f5e6dc]' : 'text-[#1f120f]'
+                  isDarkMode 
+                    ? 'text-[#f5e6dc] drop-shadow-[0_8px_32px_rgba(194,79,99,0.3)]' 
+                    : 'text-[#1f120f] drop-shadow-[0_8px_32px_rgba(194,79,99,0.2)]'
                 }`}>
-                  <span className={`inline-block px-8 py-4 rounded-[3rem] ${
-                    isDarkMode 
-                      ? 'bg-[#f5e6dc]/95 text-[#1f120f] shadow-[0_20px_80px_rgba(245,230,220,0.3)]' 
-                      : 'bg-white/95 text-[#1f120f] shadow-[0_20px_80px_rgba(31,18,15,0.15)]'
-                  }`}>
-                    Meet Creo
-                  </span>
+                  Meet Creo
                 </h1>
               </motion.div>
-
-              <motion.p
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ duration: 0.7, delay: 0.4 }}
-                className={`${bodyFont.className} text-2xl md:text-3xl font-medium mt-8 transition-colors duration-300 ${
-                  isDarkMode ? 'text-[#f5e6dc]' : 'text-[#1f120f]'
-                }`}
-              >
-                This is Smart Learning
-              </motion.p>
 
               <motion.div
                 initial={{ opacity: 0, scale: 0.95 }}
                 animate={{ opacity: 1, scale: 1 }}
-                transition={{ duration: 0.7, delay: 0.6 }}
-                className="mt-10"
+                transition={{ duration: 0.7, delay: 0.5 }}
+                className="mt-12"
               >
                 <Link
                   href="/course"

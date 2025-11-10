@@ -41,8 +41,8 @@ export const HERO_FLOATING_ELEMENTS: FloatingElementConfig[] = [
     title: 'AI Course Builder',
     subtitle: 'From prompt to path',
     position: {
-      top: '15%',
-      left: '5%',
+      top: '12%',
+      left: '8%',
     },
     animation: {
       initialY: -30,
@@ -69,8 +69,8 @@ export const HERO_FLOATING_ELEMENTS: FloatingElementConfig[] = [
     title: 'Personalized Paths',
     subtitle: '5 modules · 4 weeks',
     position: {
-      top: '40%',
-      left: '8%',
+      bottom: '25%',
+      left: '12%',
     },
     animation: {
       initialY: 20,
@@ -97,8 +97,8 @@ export const HERO_FLOATING_ELEMENTS: FloatingElementConfig[] = [
     title: 'Curated Videos',
     subtitle: '3 explainers per topic',
     position: {
-      top: '20%',
-      right: '6%',
+      top: '18%',
+      right: '10%',
     },
     animation: {
       initialY: -25,
@@ -125,8 +125,8 @@ export const HERO_FLOATING_ELEMENTS: FloatingElementConfig[] = [
     title: 'Study Pods',
     subtitle: '3-5 learners each',
     position: {
-      top: '50%',
-      right: '10%',
+      top: '55%',
+      right: '8%',
     },
     animation: {
       initialY: 15,
@@ -153,8 +153,8 @@ export const HERO_FLOATING_ELEMENTS: FloatingElementConfig[] = [
     title: 'Study Stream',
     subtitle: 'Notes & progress',
     position: {
-      bottom: '20%',
-      right: '8%',
+      bottom: '18%',
+      right: '15%',
     },
     animation: {
       initialY: 25,
