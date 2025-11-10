@@ -22,12 +22,25 @@ const bodyFont = Space_Grotesk({ subsets: ['latin'], weight: ['400', '500', '600
 type DurationVariant = { label: string; value: string };
 
 const parseDurationToDays = (value?: string) => {
-  if (!value) return 28;
-  const match = value.match(/(\d+(?:\.\d+)?)\s*(day|week|month|year)s?/i);
-  if (!match) return 28;
+  if (!value || !value.trim()) return 28;
+  const match = value.match(/(\d+(?:\.\d+)?)\s*(d|day|w|wk|week|m|mo|month|y|yr|year)s?/i);
+  if (!match) {
+    // Try to extract just a number
+    const numMatch = value.match(/(\d+(?:\.\d+)?)/);
+    if (numMatch) {
+      // Default to weeks if only number is provided
+      return Math.max(1, Math.round(Number(numMatch[1]) * 7));
+    }
+    return 28;
+  }
   const amount = Number(match[1]);
   const unit = match[2].toLowerCase();
-  const unitToDays: Record<string, number> = { day: 1, week: 7, month: 30, year: 365 };
+  const unitToDays: Record<string, number> = { 
+    d: 1, day: 1,
+    w: 7, wk: 7, week: 7,
+    m: 30, mo: 30, month: 30,
+    y: 365, yr: 365, year: 365
+  };
   return Math.max(1, Math.round(amount * (unitToDays[unit] ?? 7)));
 };
 
