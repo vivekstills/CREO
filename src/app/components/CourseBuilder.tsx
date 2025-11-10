@@ -15,6 +15,7 @@ import CourseNotesSidebar from '@/app/components/CourseNotesSidebar';
 import LearningPathCohortCard from '@/app/components/LearningPathCohortCard';
 import ModuleSocialSpace from '@/app/components/ModuleSocialSpace';
 import ModuleCarousel from '@/app/components/ModuleCarousel';
+import Waves from '@/app/components/Waves';
 import { Playfair_Display, Space_Grotesk } from 'next/font/google';
 import { AnimatePresence, motion } from 'framer-motion';
 
@@ -488,8 +489,23 @@ export default function CourseBuilder() {
   };
 
   return (
-    <div className={`${bodyFont.className} max-w-6xl mx-auto py-10 px-4 space-y-10`}>
-      <div className="space-y-6 text-center">
+    <div className={`${bodyFont.className} relative`}>
+      <Waves
+        lineColor="rgba(169, 87, 87, 0.08)"
+        backgroundColor="transparent"
+        waveSpeedX={0.008}
+        waveSpeedY={0.003}
+        waveAmpX={20}
+        waveAmpY={12}
+        xGap={12}
+        yGap={40}
+        friction={0.94}
+        tension={0.004}
+        maxCursorMove={80}
+        style={{ position: 'fixed', zIndex: 0, pointerEvents: 'none' }}
+      />
+      <div className="relative z-10 max-w-6xl mx-auto py-10 px-4 space-y-10">
+        <div className="space-y-6 text-center">
         <p className="text-sm tracking-[0.5em] uppercase text-[#c1b6a4]">Course Builder</p>
         <h1 className={`${headlineFont.className} text-4xl text-[#111]`}>
           Compose complete learning journeys with one prompt
@@ -702,6 +718,7 @@ export default function CourseBuilder() {
           )}
         </section>
       )}
+      </div>
     </div>
   );
 }

@@ -6,7 +6,14 @@ LearnLoop is a Next.js-based learning platform that uses Google's Gemini AI to g
 **Current State**: Successfully migrated from Vercel to Replit and running in production mode.
 
 ## Recent Changes
-- **November 10, 2025 (Latest)**: Interactive carousel with full module details
+- **November 10, 2025 (Latest)**: Added beautiful animated waves background
+  - **Perlin Noise Waves**: Interactive canvas-based wave animation using Perlin noise
+  - **Mouse Interaction**: Waves react to cursor movement with fluid physics
+  - **Subtle Design**: Semi-transparent waves (#a95757 at 8% opacity) match brand colors
+  - **Performance**: GPU-accelerated canvas rendering with requestAnimationFrame
+  - **Fixed Background**: Waves stay fixed as page scrolls for parallax effect
+  
+- **November 10, 2025**: Interactive carousel with full module details
   - **Master-Detail Flow**: Carousel cards control expanded module view below
   - **Full-Width Cards**: 900px wide carousel cards with topic previews
   - **Complete Module Details**: Click any card to see full topics, objectives, quizzes, videos
@@ -136,7 +143,7 @@ Course testing endpoint
 - Using `--legacy-peer-deps` for npm install due to React 19 and framer-motion compatibility
 - TypeScript type checking disabled in build (`ignoreBuildErrors: true`) due to framer-motion/React 19 type incompatibilities - code works correctly at runtime
 - YouTube integration available but API key not yet configured
-- Turbopack panic in Next.js 16 is a known issue and doesn't affect functionality
+- Turbopack panic in Next.js 16 is a known issue ("Item already exists") and doesn't affect functionality - pages load and render correctly
 
 ## Debugging & Logging
 - Course generation requests include correlation IDs (format: `req_TIMESTAMP_RANDOM`)
