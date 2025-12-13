@@ -1,0 +1,136 @@
+import React, { useState } from 'react';
+import { Lock, Star, CheckCircle2 } from 'lucide-react';
+
+const GamifiedRoadmap = () => {
+  const [modules, setModules] = useState([
+    { id: 1, title: "Introduction", status: "completed", stars: 3, position: { x: 20, y: 80 } },
+    { id: 2, title: "Basics", status: "completed", stars: 3, position: { x: 35, y: 65 } },
+    { id: 3, title: "Intermediate", status: "completed", stars: 2, position: { x: 25, y: 50 } },
+    { id: 4, title: "Advanced", status: "current", stars: 0, position: { x: 45, y: 40 } },
+    { id: 5, title: "Expert", status: "locked", stars: 0, position: { x: 65, y: 35 } },
+    { id: 6, title: "Master", status: "locked", stars: 0, position: { x: 80, y: 25 } },
+    { id: 7, title: "Final", status: "locked", stars: 0, position: { x: 70, y: 15 } }
+  ]);
+
+  const renderPath = (from, to, isLocked) => {
+    const x1 = parseFloat(from.x);
+    const y1 = parseFloat(from.y);
+    const x2 = parseFloat(to.x);
+    const y2 = parseFloat(to.y);
+    
+    const midX = (x1 + x2) / 2;
+    const midY = (y1 + y2) / 2;
+    
+    return (
+      <path
+        d={`M ${x1} ${y1} Q ${midX} ${midY} ${x2} ${y2}`}
+        fill="none"
+        stroke={isLocked ? "#e5e7eb" : "#8b5cf6"}
+        strokeWidth="4"
+        strokeLinecap="round"
+        strokeDasharray={isLocked ? "6,6" : "none"}
+      />
+    );
+  };
+
+  return (
+    <div className="w-full h-screen bg-gradient-to-br from-violet-50 to-indigo-100 flex items-center justify-center p-8">
+      <div className="w-full max-w-5xl">
+        
+        {/* Header */}
+        <div className="flex items-center justify-between mb-8">
+          <h1 className="text-3xl font-bold text-gray-800">Learning Journey</h1>
+          <div className="flex items-center gap-2 bg-white px-5 py-2 rounded-full shadow-sm border border-gray-100">
+            <Star className="w-4 h-4 text-amber-400 fill-amber-400" />
+            <span className="font-semibold text-gray-700">
+              {modules.reduce((acc, m) => acc + m.stars, 0)}/{modules.length * 3}
+            </span>
+          </div>
+        </div>
+
+        {/* Map */}
+        <div className="relative w-full bg-white rounded-3xl shadow-xl p-16" style={{height: '600px'}}>
+          
+          {/* Paths */}
+          <svg className="absolute inset-0 w-full h-full" viewBox="0 0 100 100" preserveAspectRatio="none">
+            {modules.map((module, i) => {
+              if (i < modules.length - 1) {
+                return (
+                  <g key={i}>
+                    {renderPath(module.position, modules[i + 1].position, modules[i + 1].status === 'locked')}
+                  </g>
+                );
+              }
+              return null;
+            })}
+          </svg>
+
+          {/* Nodes */}
+          {modules.map((module) => (
+            <div
+              key={module.id}
+              className="absolute transform -translate-x-1/2 -translate-y-1/2 group"
+              style={{ left: `${module.position.x}%`, top: `${module.position.y}%` }}
+            >
+              
+              {/* Glow for current */}
+              {module.status === 'current' && (
+                <div className="absolute inset-0 w-20 h-20 -m-4 bg-violet-300 rounded-full blur-xl opacity-40 animate-pulse"></div>
+              )}
+
+              {/* Circle */}
+              <div 
+                className={`
+                  relative w-12 h-12 rounded-full flex items-center justify-center
+                  transition-all duration-300 cursor-pointer
+                  ${module.status === 'completed' ? 'bg-violet-500 shadow-lg' : ''}
+                  ${module.status === 'current' ? 'bg-violet-500 shadow-lg shadow-violet-300 scale-110' : ''}
+                  ${module.status === 'locked' ? 'bg-gray-200 shadow-md' : ''}
+                  hover:scale-125
+                `}
+              >
+                <span className={`text-base font-bold ${module.status === 'locked' ? 'text-gray-400' : 'text-white'}`}>
+                  {module.id}
+                </span>
+
+                {module.status === 'locked' && (
+                  <div className="absolute inset-0 flex items-center justify-center">
+                    <Lock className="w-5 h-5 text-gray-500" />
+                  </div>
+                )}
+
+                {module.status === 'completed' && (
+                  <div className="absolute -top-1 -right-1 bg-white rounded-full p-0.5">
+                    <CheckCircle2 className="w-4 h-4 text-green-500 fill-green-500" />
+                  </div>
+                )}
+              </div>
+
+              {/* Stars */}
+              {module.stars > 0 && (
+                <div className="absolute -bottom-5 left-1/2 transform -translate-x-1/2 flex gap-0.5">
+                  {[1, 2, 3].map((i) => (
+                    <Star 
+                      key={i}
+                      className={`w-2.5 h-2.5 ${i <= module.stars ? 'text-amber-400 fill-amber-400' : 'text-gray-300'}`}
+                    />
+                  ))}
+                </div>
+              )}
+
+              {/* Title on hover */}
+              <div className="absolute top-14 left-1/2 transform -translate-x-1/2 opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap">
+                <div className="bg-gray-900 text-white text-xs px-3 py-1.5 rounded-lg shadow-lg">
+                  {module.title}
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+
+      </div>
+    </div>
+  );
+};
+
+export default GamifiedRoadmap;
